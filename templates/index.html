@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>StarWars</title>
+  </head>
+  <body>
+    <div class="landing-section">
+      <div class="content">
+        <h1>Star wars task</h1>
+      </div>
+      <div class="layout"></div>
+    </div>
+    <div class="container">
+      <form action="/getData" method="POST">
+        <input
+          type="text"
+          class="search"
+          required
+          name="character"
+          placeholder="enter a character name"
+        />
+        <input class="btn" type="submit" value="search" />
+      </form>
+      <div class="characters">
+        {% for character in characters %}
+        <div class="character">
+          <h4>{{character['name']}} character info</h4>
+          <p>height {{character['height']}}</p>
+          <p>mass {{character['mass']}}</p>
+          <p>hair color {{character['hair_color']}}</p>
+          <p>skin color {{character['skin_color']}}</p>
+          <p>eye color {{character['eye_color']}}</p>
+          <p>birth year {{character['birth_year']}}</p>
+          <p>gender {{character['gender']}}</p>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="pages">
+        pages {% for i in range(1, pages) %}
+        <span>
+          <a href="/{{i}}" rel="noopener noreferrer">{{i}}</a>
+        </span>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="footer">
+      <p>
+        &copy; Credits To
+        <a href="https://www.linkedin.com/in/mustafa-prog" target="_blank">
+          Mustafa Mahmoud</a
+        >
+      </p>
+    </div>
+  </body>
+</html>

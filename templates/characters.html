@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>StarWars</title>
+  </head>
+  <body>
+    <div class="landing-section">
+      <div class="content">
+        <h1>characters info page</h1>
+      </div>
+    </div>
+    <div class="layout"></div>
+    <div class="container">
+      <h1>Character Info</h1>
+      {% if warning %}
+      <h2>{{warning}}</h2>
+      {% endif %} {% for character in fullCharactersInfo %}
+      <div class="character-info">
+        <h2>Name {{character["character"]["name"]}}</h2>
+        <p>gender {{character["character"]["gender"]}}</p>
+        <p>home world {{character["homeWorld"]["name"]}}</p>
+        <p>species name {{character["species"]["name"]}}</p>
+        {%for film in character["filmList"]%}
+        <p>film {{film["title"]}}</p>
+        {%endfor%}
+      </div>
+      {%endfor%}
+    </div>
+    <div class="footer">
+      <p>
+        &copy; Credits To
+        <a href="https://www.linkedin.com/in/mustafa-prog" target="_blank">
+          Mustafa Mahmoud</a
+        >
+      </p>
+    </div>
+  </body>
+</html>
