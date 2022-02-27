@@ -30,37 +30,53 @@ def index(page):
     return render_template("index.html", pages=int(pages), characters = data["results"])
 
 
-@app.route('/getData', methods=['POST'])
-def getData():
-    if request.method == 'POST':
+@app.route('/matched-characters', methods=['POST'])
+def getMatchedCharacters():
+        request_url = "https://swapi.dev/api/people?page=1"
+        data = get_request(request_url)
+        pages = math.ceil(data["count"] / 10 + (data['count']%10 != 0)) 
         char = request.form["character"].lower()
         request_url = "https://swapi.dev/api/people?search="+char
+        search_data = get_request(request_url)
+        matched_characters = search_data['results']
+
+        if matched_characters == []:
+            warning = "there is no character with this name."
+            return render_template("index.html", warning = warning, pages=int(pages), characters = data["results"])
+        else:
+            return render_template(
+            "index.html", 
+            matched_characters = matched_characters, pages=int(pages), characters = data["results"]
+            )
+
+@app.route('/character-info/<string:name>')
+def getCharacterData(name):
+        request_url = "https://swapi.dev/api/people?search="+name
         species = None
         filmList = None
         homeWorld = None
-        fullCharactersInfo = []
         data = get_request(request_url)
-        characters = data['results']
+        character=data["results"][0]
+        print("from test", character)
         t3 = time()
-        for character in characters:
-            if len(character["species"]) > 0:
-                species = get_request(character["species"][0])
-            filmList = get_films_list(character['films'])
-            homeWorld = get_request(character["homeworld"])
-            fullCharactersInfo.append({"character":character, "filmList":filmList, "species":species, "homeWorld":homeWorld})
-        if characters == []:
+        if len(character["species"]) > 0:
+            species = get_request(character["species"][0])
+        filmList = get_films_list(character['films'])
+        homeWorld = get_request(character["homeworld"])
+        if character == None:
             warning = "there is no character with this name."
             return render_template("characters.html", warning = warning)
         else:
             t4 = time()
             time_elapsed = t4 - t3
-            print('Main Function Time = ', time_elapsed)
+            print('Characters Search Matching Function Time = ', time_elapsed)
             return render_template(
                 "characters.html", 
-                fullCharactersInfo = fullCharactersInfo, 
+                character = character,
+                homeWorld = homeWorld,
+                species = species,
+                filmList = filmList
             )
-    else :
-        return render_template("index.html")
 
 if __name__ == '__main__':
     app.debug = True

@@ -18,17 +18,17 @@
       <h1>Character Info</h1>
       {% if warning %}
       <h2>{{warning}}</h2>
-      {% endif %} {% for character in fullCharactersInfo %}
+      {% endif %}
       <div class="character-info">
-        <h2>Name {{character["character"]["name"]}}</h2>
-        <p>gender {{character["character"]["gender"]}}</p>
-        <p>home world {{character["homeWorld"]["name"]}}</p>
-        <p>species name {{character["species"]["name"]}}</p>
-        {%for film in character["filmList"]%}
+        <h2>Name {{character["name"]}}</h2>
+        <p>gender {{character["gender"]}}</p>
+        <p>home world {{homeWorld["name"]}}</p>
+        <p>species name {{species["name"]}}</p>
+        <p>average life span {{species["average_lifespan"]}}</p>
+        {%for film in filmList%}
         <p>film {{film["title"]}}</p>
         {%endfor%}
       </div>
-      {%endfor%}
     </div>
     <div class="footer">
       <p>

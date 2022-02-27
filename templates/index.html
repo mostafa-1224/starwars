@@ -16,7 +16,7 @@
       <div class="layout"></div>
     </div>
     <div class="container">
-      <form action="/getData" method="POST">
+      <form action="/matched-characters" method="POST">
         <input
           type="text"
           class="search"
@@ -26,6 +26,25 @@
         />
         <input class="btn" type="submit" value="search" />
       </form>
+      {% if warning %}
+      <h2>{{warning}}</h2>
+      {% endif %} {%if matched_characters%}
+      <div class="search-result">
+        <hr />
+        <h1>search result</h1>
+        <div class="matched-characters">
+          {%for character in matched_characters%}
+          <div class="character">
+            <p>{{character["name"]}}</p>
+            <a href="/character-info/{{character['name']}}"
+              >see full character information</a
+            >
+          </div>
+          {%endfor%}
+        </div>
+        <hr />
+      </div>
+      {% endif %}
       <div class="characters">
         {% for character in characters %}
         <div class="character">
