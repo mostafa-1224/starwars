@@ -1,14 +1,9 @@
-from functools import cache
 from flask import Flask, render_template, request
 import requests
 import json
 import math
 from time import time
 app = Flask(__name__)
-
-local_cache = {
-    "people_pages": dict()
-}
 
 def get_request(request_url):
         res = requests.get(request_url)
@@ -28,14 +23,9 @@ def get_films_list(films_urls):
 @app.route('/<int:page>')
 def index(page):
     t1 = time()
-    page = str(page)
-    if page in local_cache["people_pages"]:
-        data = local_cache["people_pages"][page]
-    else:
-        request_url = "https://swapi.dev/api/people?page=" + page
-        data = get_request(request_url)
-        local_cache["people_pages"][page] = data
-    pages = math.ceil(data["count"] / 10 + (data['count'] % 10 != 0))
+    request_url = "https://swapi.dev/api/people?page=" + str(page)
+    data = get_request(request_url)
+    pages = math.ceil(data["count"] / 10 + (data['count']%10 != 0))
     t2 = time()
     time_elapsed = t2 - t1
     print('Initial Function Time = ', time_elapsed)
@@ -46,13 +36,9 @@ def index(page):
 @app.route('/matched-characters', methods=['POST'])
 def getMatchedCharacters():
         t3=time()
-        request_url = ""
-        if "1" in local_cache["people_pages"]:
-            data = local_cache["people_pages"]["1"]
-        else:
-            request_url = "https://swapi.dev/api/people?page=1"
-            data = get_request(request_url)
-        pages = math.ceil(data["count"] / 10 + (data['count'] % 10 != 0)) 
+        request_url = "https://swapi.dev/api/people?page=1"
+        data = get_request(request_url)
+        pages = math.ceil(data["count"] / 10 + (data['count']%10 != 0)) 
         char = request.form["character"].lower()
         request_url = "https://swapi.dev/api/people?search="+char
         search_data = get_request(request_url)
